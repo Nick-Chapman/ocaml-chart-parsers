@@ -4,7 +4,7 @@ Implementation based on chart parsing techniques (Earley / CYK) but with a funct
 
 Examples:
 
-* Arith: The standard arithment precedence example for bin-ops `+` and `*`
+* Arith: The standard arithmetic precedence example for bin-ops `+` and `*`
 
 * Catalan: A very ambiguous grammar: the number of parses for input length N being the Nth Catalan number.
 
