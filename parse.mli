@@ -3,13 +3,10 @@
 
 type 'a t
 
-val trace : 'a t -> unit
-
 type pos = int
 
 val create :
   gram: ('a,'a) Rule.t
-  -> ?debug:(origin:pos -> pos -> 'a -> unit)
   -> unit
   -> 'a t
 

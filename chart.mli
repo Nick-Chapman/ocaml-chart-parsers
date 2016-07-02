@@ -9,10 +9,10 @@ module Res : sig
       [@@deriving sexp_of]
 end
 
-val parse2 :
-  ?trace:bool
-  -> dict: ('tok -> 'a list)
+val parse
+  :  dict: ('tok -> 'a list)
   -> gram : ('a,'a) Rule.t
   -> accept: ('a -> 'res option)
   -> words: 'tok list
+  -> unit
   -> 'res Res.t

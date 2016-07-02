@@ -11,9 +11,6 @@ module Pipe : sig
   val register_callback : 'a t -> 'a k -> unit
   val supply : 'a t -> pos -> 'a -> unit
 
-  val trace : tag:string -> 'a t -> unit
-
-  val size : 'a t -> int * int
 end = struct
 
   type 'a t = {
@@ -33,53 +30,25 @@ end = struct
   let supply t pos a =
     t.items <- (pos,a) :: t.items;
     List.iter (List.rev t.callbacks) ~f:(fun k -> k pos a)
-
-  let trace ~tag t =
-    printf "%s: #callbacks = %d, #items = %d\n"
-      tag
-      (List.length t.callbacks)
-      (List.length t.items)
-
-  let size t = 
-    (List.length t.callbacks),
-    (List.length t.items)
       
 end
 
 type 'a t = {
   gram : ('a,'a) Rule.t;
   pipes : (pos, 'a Pipe.t) Hashtbl.t;
-  debug_opt : (origin:pos -> 'a k) option;
 }
 
-let _trace t =
-  let cmp (p1,_) (p2,_) = Int.compare p1 p2 in
-  List.iter (List.sort ~cmp (Hashtbl.to_alist t.pipes)) ~f:(fun (pos,pipe) ->
-    Pipe.trace ~tag:(sprintf "%d" pos) pipe;
-  )
-
-let trace t =
-  let (c,i) = 
-    List.fold ~init:(0,0) (Hashtbl.to_alist t.pipes) ~f:(fun (c,i) (_,pipe) ->
-      let (c2,i2) = Pipe.size pipe in
-      (c+c2,i+i2)
-    )
-  in eprintf "(c,i)=(%d,%d)\n" c i
-    
-let create ~gram ?debug () =
+let create ~gram () =
   let pipes : (pos, 'a Pipe.t) Hashtbl.t = Hashtbl.Poly.create () in
-  { gram; pipes; debug_opt = debug }
+  { gram; pipes }
 
-let want (type n) ({gram;pipes;debug_opt} : n t) =
+let want (type n) ({gram;pipes} : n t) =
 
   let rec get_pipe origin =
     match Hashtbl.find pipes origin with
     | Some pipe -> pipe
     | None ->
       let pipe = Pipe.create () in
-      begin match debug_opt with | None -> () | Some debug ->
-	Pipe.register_callback pipe (debug ~origin);
-      end;    
       Hashtbl.add_exn pipes ~key:origin ~data:pipe;
       process origin gram (Pipe.supply pipe);
       pipe
@@ -99,7 +68,7 @@ let want (type n) ({gram;pipes;debug_opt} : n t) =
 	process pos t1 (fun pos a ->
 	  process pos t2 (fun pos b ->
 	    k pos (a,b)))
-      | Guard (_name,t) ->
+      | Guard t ->
 	process pos t (fun pos opt ->
 	  match opt with
 	  | None -> ()

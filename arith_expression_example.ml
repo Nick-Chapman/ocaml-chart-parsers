@@ -1,6 +1,4 @@
-
 open Core.Std
-
 open Chart.Rule
 
 module Exp = struct
@@ -26,30 +24,19 @@ let accept : nt -> Exp.t option =
 
 type 'a rule = (nt,'a) Chart.Rule.t
 
-(*let word : string rule = select (function Word w -> Some w | _ -> None)*)
+let term : Exp.t rule = select (function Term e -> Some e | _ -> None)
 
-let term : Exp.t rule = select "T" (function Term e -> Some e | _ -> None)
-
-let factor : Exp.t rule = select "F" (function Factor e -> Some e | _ -> None)
-
-(*let var : Exp.t rule =
-  word >>= fun w ->
-  if String.for_all w ~f:Char.is_alpha then return (Exp.Var w) else fail*)
-
-(*let key : string -> unit rule =
-  fun s ->
-    word >>= fun w ->
-    if s=w then return () else fail*)
+let factor : Exp.t rule = select (function Factor e -> Some e | _ -> None)
 
 let var : Exp.t rule =
-  select "V" (fun nt ->
+  select (fun nt ->
     match nt with
     | Word w when String.for_all w ~f:Char.is_alpha -> Some (Exp.Var w)
     | _ -> None)
     
 let key : string -> unit rule =
   fun s ->
-    select s (fun nt ->
+    select (fun nt ->
       match nt with
       | Word w when s=w -> Some ()
       | _ -> None)
@@ -63,4 +50,4 @@ let gram : nt rule =
     (key "(" -$$ term @> key ")" -$$ return (fun e -> Factor e));
   ]
 
-let run words = Chart.parse2 ~trace:false ~dict ~gram ~accept ~words
+let run words = Chart.parse ~dict ~gram ~accept ~words ()

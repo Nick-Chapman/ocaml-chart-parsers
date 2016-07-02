@@ -20,13 +20,13 @@ let accept : nt -> unit option =
 
 type 'a rule = (nt,'a) Chart.Rule.t
 
-let x : unit rule = select "X" (function Word _   -> Some () | _ -> None)
-let q : unit rule = select "Q" (function Q -> Some () | _ -> None)
+let x : unit rule = select (function Word _ -> Some () | _ -> None)
+let q : unit rule = select (function Q -> Some () | _ -> None)
 
-let run ?trace ~gram s =
+let run ~gram s =
   let words = List.map (String.to_list s) ~f:(String.make 1) in
   printf "words: %s\n" (String.concat ~sep:" " words);
-  let res = number_of_parses (Chart.parse2 ?trace ~dict ~gram ~accept ~words) in
+  let res = number_of_parses (Chart.parse ~dict ~gram ~accept ~words ()) in
   printf !"res: %{sexp:int option}\n" res
 
 module Catalan = struct
