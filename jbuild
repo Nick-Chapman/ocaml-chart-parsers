@@ -1,0 +1,3 @@
+(library
+ ((name chart_parse_combinators_lib)
+  (libraries (core))))
