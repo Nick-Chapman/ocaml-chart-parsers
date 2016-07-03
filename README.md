@@ -4,10 +4,8 @@ Ocaml parser combinators based on Earley & CYK chart parsing algorithms.
 
 Supports arbitrary CFG grammars: Left recursion and ambiguity is no
 problem. With the `bind` combinator we even get context sensitive parsing.
-
 Like other parser combinators we may embed semantic actions into the
 grammar specification allowing easy construction of AST.
-
 Errors are automatically detected at the first input token which leads
 to no possible parse.
 
