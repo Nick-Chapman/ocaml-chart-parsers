@@ -13,6 +13,8 @@ Examples:
 
 * Arith: The standard arithmetic precedence example for bin-ops `+` and `*`
 
+* NLP: Natural language processing example showing the PP attachment ambiguity problem.
+
 * Catalan: A very ambiguous grammar: the number of parses for input length N being the Nth Catalan number.
 
 * Choose7: Another ambiguous grammar: the number of parses for input length N being the Nth element in the 7th row of Pascal's triangle.
