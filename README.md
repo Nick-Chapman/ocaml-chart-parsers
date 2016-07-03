@@ -11,7 +11,7 @@ to no possible parse.
 
 Examples:
 
-* Arith: The standard arithmetic precedence example for bin-ops `+` and `*`
+* Arith: The standard arithmetic precedence example for bin-ops `+` and `*` (with a litte bit of ambiguity added for fun by not fixing if `+` associates to the left or right)
 
 * NLP: Natural language processing example showing the PP attachment ambiguity problem.
 http://allthingslinguistic.com/post/52411342274/how-many-meanings-can-you-get-for-the-sentence-i
