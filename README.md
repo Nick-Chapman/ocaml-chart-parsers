@@ -14,6 +14,7 @@ Examples:
 * Arith: The standard arithmetic precedence example for bin-ops `+` and `*`
 
 * NLP: Natural language processing example showing the PP attachment ambiguity problem.
+http://allthingslinguistic.com/post/52411342274/how-many-meanings-can-you-get-for-the-sentence-i
 
 * Catalan: A very ambiguous grammar: the number of parses for input length N being the Nth Catalan number.
 
