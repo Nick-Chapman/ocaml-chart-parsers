@@ -1,3 +1,4 @@
+# chart-parse-combinators
 
 Ocaml parser combinators for CFG grammars. Supports left recursion and ambiguity.
 Implementation based on chart parsing techniques (Earley / CYK) but with a functional programming twist!
