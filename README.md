@@ -19,3 +19,6 @@ http://allthingslinguistic.com/post/52411342274/how-many-meanings-can-you-get-fo
 * Catalan: A very ambiguous grammar: the number of parses for input length N being the Nth Catalan number.
 
 * Choose7: Another ambiguous grammar: the number of parses for input length N being the Nth element in the 7th row of Pascal's triangle.
+
+The Catalan and Choose7 example come direct from the following fun blog posting about the Marpa parser:
+http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html
