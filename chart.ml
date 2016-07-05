@@ -159,9 +159,9 @@ module Res = struct
   [@@deriving sexp_of]
 end
   
-let parse ~dict ~gram ~accept ~words () =
+let parse ~dict ~gram ~accept ~tokens () =
   let t = State.create ~gram () in
-  let sentence_length = List.length words in
+  let sentence_length = List.length tokens in
   let results : 'n list ref = ref [] in
   let () =
     State.want t ~origin:0 (fun pos sym ->
@@ -171,18 +171,18 @@ let parse ~dict ~gram ~accept ~words () =
         | None -> ()
       ))
   in
-  let rec supply ~pos words =
+  let rec supply ~pos tokens =
     match State.supply t pos with
     | None -> Res.Fail (`position pos)
     | Some supply_sym ->
-      match words with
-      | word::words ->
-	List.iter (dict word) ~f:supply_sym;
-	supply ~pos:(pos+1) words
+      match tokens with
+      | token::tokens ->
+	List.iter (dict token) ~f:supply_sym;
+	supply ~pos:(pos+1) tokens
       | [] ->
 	match !results with
 	| [] -> Res.Fail (`position sentence_length)
 	| [x] -> Res.Succ x
 	| _::_::_ as xs -> Res.Amb (`number_parses (List.length xs), xs)
   in
-  supply ~pos:0 words
+  supply ~pos:0 tokens

@@ -6,11 +6,11 @@ let number_of_parses = Chart.Res.(function
   | Amb (`number_parses n,_) -> Some n
   | Fail _ -> None)
 
-type nt = S | Q | Word of string
+type nt = S | Q | Token of string
 
 type 'a rule = (nt,'a) Chart.Rule.t
 
-let x : unit rule = select (function Word _ -> Some () | _ -> None)
+let x : unit rule = select (function Token _ -> Some () | _ -> None)
 let q : unit rule = select (function Q -> Some () | _ -> None)
 
 (* very ambiguous grammar: all possible binary bracketings *)
@@ -22,21 +22,21 @@ let gram : nt rule = alt [
   (q -$$ q -$$ return Q);
 ]
 
-let dict : string -> nt list = fun word -> [Word word]
+let dict : string -> nt list = fun token -> [Token token]
 
 let accept : nt -> unit option = function
   | S -> Some ()
   | _ -> None
 
-let run words = Chart.parse ~dict ~gram ~accept ~words ()
+let run tokens = Chart.parse ~dict ~gram ~accept ~tokens ()
 
 let test s =
-  let words = List.map (String.to_list s) ~f:(String.make 1) in
-  printf "words: %s\n" (String.concat ~sep:" " words);
-  printf !"res: %{sexp:int option}\n" (number_of_parses (run words))
+  let tokens = List.map (String.to_list s) ~f:(String.make 1) in
+  printf "tokens: %s\n" (String.concat ~sep:" " tokens);
+  printf !"res: %{sexp:int option}\n" (number_of_parses (run tokens))
 
 let%expect_test _ =
   test "123456";
   [%expect {|
-      words: 1 2 3 4 5 6
+      tokens: 1 2 3 4 5 6
       res: (42)|}]

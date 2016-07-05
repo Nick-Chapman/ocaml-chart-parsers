@@ -39,7 +39,7 @@ let gram =
   alt (List.map bnf ~f:(fun (lhs,rhs) ->
     sequence rhs @> return (fun xs -> Cat (lhs,xs))))
 
-(* POS tagging for a small set of words *)  
+(* POS tagging for a small set of tokens *)  
 let tags : string -> pos list = function
   |"I"                          -> [Pronoun]
   |"the"|"a"                    -> [Det]
@@ -48,23 +48,23 @@ let tags : string -> pos list = function
   |"on"|"with"                  -> [Prep]
   | _                           -> []
       
-let dict : string -> tree list = fun word ->
-  List.map (tags word) ~f:(fun pos -> Pos (pos,word))
+let dict : string -> tree list = fun token ->
+  List.map (tags token) ~f:(fun pos -> Pos (pos,token))
 
 let accept : tree -> tree option = function
   | Cat (Sentence,_) as x -> Some x
   | _ -> None
 
-let run words =
-  Chart.parse ~dict ~gram ~accept ~words ()
+let run tokens =
+  Chart.parse ~dict ~gram ~accept ~tokens ()
 
 let split s =
   List.filter (String.split s ~on:' ') ~f:(function "" -> false | _ -> true)
 
 let test s =
-  let words = split s in
-  printf "words: %s\n" (String.concat ~sep:" " words);
-  printf !"res: %{sexp:result}\n" (run words)
+  let tokens = split s in
+  printf "words: %s\n" (String.concat ~sep:" " tokens);
+  printf !"res: %{sexp:result}\n" (run tokens)
     
 let%expect_test _ =
   test "I saw the man with a telescope";
