@@ -1,6 +1,9 @@
-# chart-parse-combinators
+# ocaml-chart-parsers
 
 Ocaml parser combinators based on Earley & CYK chart parsing algorithms.
+
+Note: This work has been extended and improved by a Haskell version here:
+https://github.com/Nick-Chapman/Earley
 
 Supports arbitrary CFG grammars: Left recursion and ambiguity is no
 problem. With the `bind` combinator we even get context sensitive parsing.
